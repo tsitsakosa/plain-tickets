@@ -1,5 +1,9 @@
 {
   "prefix": "SHOP",
   "dir": "tickets",
-  "board": "BOARD.md"
+  "board": "BOARD.md",
+  "sections": ["## Description", "## Acceptance criteria", "## Notes"],
+  "templates": {
+    "bug": "templates/bug.md"
+  }
 }
