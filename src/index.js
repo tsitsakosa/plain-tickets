@@ -351,8 +351,8 @@ export function listTickets(tickets, config, filters = {}) {
     const bad = (filters[key] ?? []).filter((value) => !values.includes(value))
     if (bad.length) throw new Error(`unknown ${key} ${bad.join(', ')}. Allowed: ${values.join(', ')}`)
   }
-  const badEpic = (filters.epic ?? []).filter((id) => !idPattern(config).test(id))
-  if (badEpic.length) throw new Error(`epic ${badEpic.join(', ')} is not a ticket id`)
+  const badEpic = (filters.epic ?? []).filter((id) => !tickets.some((t) => t.id === id && t.type === 'epic'))
+  if (badEpic.length) throw new Error(`no epic ticket ${badEpic.join(', ')}`)
   const keep = (key, value) => !filters[key]?.length || filters[key].includes(value)
   return tickets
     .filter((t) => filters.all || filters.status?.length || !config.closed.includes(t.status))
@@ -471,12 +471,12 @@ export function createTicket(config, input, today = localDate()) {
   return { id, file, text }
 }
 
-// How agents in this project should run the CLI. `npx plain-tickets` alone would fetch whatever
-// package has that name on the npm registry, so it is only used when the project installed it.
+// How agents in this project should run the CLI. Plain `npx plain-tickets` would install whatever
+// package has that name on the npm registry when node_modules is missing. `--no` refuses to install.
 export function cliCommand(root) {
   try {
     const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
-    if (pkg.dependencies?.['plain-tickets'] || pkg.devDependencies?.['plain-tickets']) return 'npx plain-tickets'
+    if (pkg.dependencies?.['plain-tickets'] || pkg.devDependencies?.['plain-tickets']) return 'npx --no plain-tickets'
   } catch {}
   return 'npx github:tsitsakosa/plain-tickets'
 }

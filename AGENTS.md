@@ -25,6 +25,6 @@ plain-tickets is a zero-dependency Node CLI and library. It keeps tickets as mar
 - A behavior change comes with a test and a README update in the same commit.
 - Tests compare `examples/BOARD.md` and the agent guide shown in the README with the generated output. When you change `agentGuide` in `src/index.js`, copy the new `plain-tickets guide` output (default config, plain-tickets in `devDependencies`) into the README.
 - Do not add an `AGENTS.md` under `examples/`. The closest `AGENTS.md` wins, so it would replace this file for those paths.
-- The package is not on the npm registry. Docs must never tell users to run `npx plain-tickets` without the local install from GitHub.
+- The package is not on the npm registry. Docs must never tell users to run `npx plain-tickets` without the local install from GitHub. The generated guide uses `npx --no plain-tickets`, which refuses to install from the registry.
 - Write the README, messages and the guide in plain English with short sentences and no em dashes.
 - Commits follow Conventional Commits (`feat:`, `fix:`, `docs:`, `test:`, `chore:`). No attribution or co-author lines.

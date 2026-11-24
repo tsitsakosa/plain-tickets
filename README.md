@@ -94,7 +94,7 @@ SHOP-0006  backlog      P4        idea     -          Wishlist
 ```
 
 - Sorted like the board: status, then priority, then id.
-- `--all` adds closed tickets. Filter with `--status`, `--type`, `--priority` and `--epic`, each comma-separated: `--status todo,review`. `--epic` shows the epic and its tickets. An unknown value is an error.
+- `--all` adds closed tickets. Filter with `--status`, `--type`, `--priority` and `--epic`, each comma-separated: `--status todo,review`. `--epic` shows the epic and its tickets. An unknown value or an id that is not an epic is an error.
 - `--json` prints the tickets as JSON, with each `file` path relative to the current folder.
 - With invalid tickets, `list` shows the valid ones and exits with `1`.
 
@@ -307,7 +307,7 @@ It also catches duplicate ids, an id that does not match its file name, an epic 
 
 [AGENTS.md](https://agents.md/) is an open format for instructions to coding agents: plain markdown in the repository root, with no required fields. When there are several, the one closest to the edited file wins.
 
-`plain-tickets init` adds a tickets section to `AGENTS.md`, or creates the file. The section is generated from your config, so it lists your own types, statuses, priorities and required sections. It uses `npx plain-tickets` when the project has plain-tickets in its `package.json`, and `npx github:tsitsakosa/plain-tickets` otherwise. To paste it somewhere else, print it with `plain-tickets guide`. Run `init` again after you change the config.
+`plain-tickets init` adds a tickets section to `AGENTS.md`, or creates the file. The section is generated from your config, so it lists your own types, statuses, priorities and required sections. It uses `npx --no plain-tickets` when the project has plain-tickets in its `package.json`, and `npx github:tsitsakosa/plain-tickets` otherwise. With `--no`, npx refuses to install a missing package, so an agent in a fresh clone gets an error instead of a package from the registry. Run `npm install` first. To paste it somewhere else, print it with `plain-tickets guide`. Run `init` again after you change the config.
 
 With the default config it reads:
 
@@ -318,10 +318,10 @@ Work is tracked as markdown files in `tickets/`, one file per ticket, with [plai
 
 ### Commands
 
-- `npx plain-tickets list`: open tickets, one line each. Add `--all` for closed ones, `--json` for JSON, or filter with `--status`, `--type`, `--priority`, `--epic` (comma-separated).
-- `npx plain-tickets new <type> "<title>"`: creates the next ticket from its template and prints the path. Options: `--priority`, `--status`, `--epic T-0001`, `--ref <path>` (repeatable), `--slug <short-slug>` (needed when the title has no a-z letters).
-- `npx plain-tickets check`: validates every ticket and names each problem.
-- `npx plain-tickets board`: validates every ticket, then rewrites `tickets/BOARD.md`.
+- `npx --no plain-tickets list`: open tickets, one line each. Add `--all` for closed ones, `--json` for JSON, or filter with `--status`, `--type`, `--priority`, `--epic` (comma-separated).
+- `npx --no plain-tickets new <type> "<title>"`: creates the next ticket from its template and prints the path. Options: `--priority`, `--status`, `--epic T-0001`, `--ref <path>` (repeatable), `--slug <short-slug>` (needed when the title has no a-z letters).
+- `npx --no plain-tickets check`: validates every ticket and names each problem.
+- `npx --no plain-tickets board`: validates every ticket, then rewrites `tickets/BOARD.md`.
 
 ### Rules
 
@@ -333,11 +333,11 @@ Work is tracked as markdown files in `tickets/`, one file per ticket, with [plai
 - Fill every section of the body that the template created.
 - On every edit, set `updated` to today (YYYY-MM-DD). Put related files, docs and URLs in `refs`.
 - Change `status` when the work moves. When closing, add the commit SHAs or ranges to `commits` and tick the checklist items that are done. If the work will not be done, write why in the body.
-- After changing tickets, run `npx plain-tickets board` and commit the tickets and `tickets/BOARD.md` together with the code they describe.
+- After changing tickets, run `npx --no plain-tickets board` and commit the tickets and `tickets/BOARD.md` together with the code they describe.
 
 ### Reporting ticket state
 
-- Run `npx plain-tickets list` to see the state. Do not read every ticket file or paste the board.
+- Run `npx --no plain-tickets list` to see the state. Do not read every ticket file or paste the board.
 - Report briefly: group by status, one line per ticket with id, title and priority, and link the file.
 - After a change, say which ids you created, moved or closed.
 ```
@@ -346,7 +346,7 @@ Which tools read `AGENTS.md`, checked in November 2026:
 
 | Tool | What to do |
 | ---- | ---------- |
-| OpenAI Codex, Cursor, Devin Desktop (formerly Windsurf) | Nothing. They read `AGENTS.md`. |
+| OpenAI Codex, Cursor, Devin Desktop | Nothing. They read `AGENTS.md`. |
 | GitHub Copilot | Nothing for the cloud agent, code review, VS Code and Copilot CLI. They read `AGENTS.md`. |
 | Claude Code | Nothing, unless the project has a `CLAUDE.md`. Claude Code then reads `CLAUDE.md` instead, so add the line `@AGENTS.md` to it. `init` reminds you. |
 | Gemini CLI | Add `"AGENTS.md"` to `context.fileName` in `.gemini/settings.json`. It reads `GEMINI.md` by default. |

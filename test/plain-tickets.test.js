@@ -427,7 +427,8 @@ test('list hides closed tickets, filters, and rejects unknown values', () => {
   assert.deepEqual(ids({ epic: ['T-0001'], all: true }), ['T-0001', 'T-0002'])
   assert.deepEqual(ids({ type: ['bug'], priority: ['P1'] }), ['T-0003'])
   assert.throws(() => ids({ status: ['open'] }), /unknown status open. Allowed: in-progress/)
-  assert.throws(() => ids({ epic: ['nope'] }), /epic nope is not a ticket id/)
+  assert.throws(() => ids({ epic: ['nope'] }), /no epic ticket nope/)
+  assert.throws(() => ids({ epic: ['T-0003'] }), /no epic ticket T-0003/)
   assert.deepEqual(formatList(listTickets(tickets, config)), [
     'id      status       priority  type  epic  title',
     'T-0001  in-progress  P2        epic  -     A ticket',
@@ -483,7 +484,7 @@ test('the guide uses the plain command only when the project installed plain-tic
   assert.match(guide, /The body must keep these headings: `## Why`/)
   assert.match(guide, /--epic WEB-0001/)
   writeFileSync(join(dir, 'package.json'), JSON.stringify({ devDependencies: { 'plain-tickets': 'github:tsitsakosa/plain-tickets' } }))
-  assert.match(agentGuide(config), /`npx plain-tickets list`/)
+  assert.match(agentGuide(config), /`npx --no plain-tickets list`/)
 })
 
 test('the README shows the guide exactly as the default config generates it', () => {
@@ -491,4 +492,11 @@ test('the README shows the guide exactly as the default config generates it', ()
   writeFileSync(join(dir, 'package.json'), JSON.stringify({ devDependencies: { 'plain-tickets': '*' } }))
   const readme = readFileSync(join(root, 'README.md'), 'utf8')
   assert.ok(readme.includes(`\`\`\`markdown\n${agentGuide(loadConfig(dir))}\`\`\``), 'README guide is out of date')
+})
+
+test('the bug template in the examples makes a valid ticket', () => {
+  const config = loadConfig(join(root, 'examples'))
+  const made = createTicket(config, { type: 'bug', title: 'Coupon is applied twice' }, '2026-11-24')
+  assert.equal(made.file, 'SHOP-0008-coupon-is-applied-twice.md')
+  assert.match(made.text, /## Steps to reproduce\n\n1\. First step\.\n[\s\S]*Reported on 2026-11-24\.\n$/)
 })
