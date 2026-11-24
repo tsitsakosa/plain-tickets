@@ -1,0 +1,38 @@
+{
+  "name": "plain-tickets",
+  "version": "0.1.0",
+  "description": "Tickets as markdown files next to your code. Validates their frontmatter and writes a BOARD.md.",
+  "author": "Athanasios Tsitsakos",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsitsakosa/plain-tickets.git"
+  },
+  "homepage": "https://github.com/tsitsakosa/plain-tickets#readme",
+  "bugs": "https://github.com/tsitsakosa/plain-tickets/issues",
+  "type": "module",
+  "bin": {
+    "plain-tickets": "bin/plain-tickets.js"
+  },
+  "exports": "./src/index.js",
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "example": "cd examples && node ../bin/plain-tickets.js board"
+  },
+  "engines": {
+    "node": ">=18.3"
+  },
+  "keywords": [
+    "tickets",
+    "issues",
+    "markdown",
+    "frontmatter",
+    "kanban",
+    "git",
+    "cli"
+  ]
+}
