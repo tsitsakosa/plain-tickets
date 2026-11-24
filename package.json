@@ -1,7 +1,7 @@
 {
   "name": "plain-tickets",
-  "version": "0.1.0",
-  "description": "Tickets as markdown files next to your code. Validates their frontmatter and writes a BOARD.md.",
+  "version": "0.2.0",
+  "description": "Tickets as markdown files next to your code. Create, list and validate them, write a BOARD.md and the ticket rules for AI agents.",
   "author": "Athanasios Tsitsakos",
   "license": "MIT",
   "repository": {
@@ -33,6 +33,8 @@
     "frontmatter",
     "kanban",
     "git",
-    "cli"
+    "cli",
+    "agents-md",
+    "ai-agents"
   ]
 }
